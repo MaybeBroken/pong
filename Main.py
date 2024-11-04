@@ -263,3 +263,4 @@ class Main(ShowBase):
 
 
 app = Main()
+app.run()
