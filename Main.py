@@ -38,6 +38,7 @@ from panda3d.core import (
     Vec3,
     CollisionHandlerPusher,
 )
+
 from direct.gui.OnscreenImage import OnscreenImage
 import direct.stdpy.threading as thread
 import direct.stdpy.file as panda_fMgr
@@ -77,7 +78,7 @@ class Main(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
         self.intro()
-    
+
     def intro(self):
         self.setBackgroundColor(0, 0, 0, 1)
         movie = self.loader.loadTexture("src/movies/intro.mp4")
@@ -85,8 +86,9 @@ class Main(ShowBase):
         movie.play()
         movie.setLoopCount(1)
         startTime = t.monotonic()
+
         def finishLaunch(task):
-            if t.monotonic()-startTime>4:
+            if t.monotonic() - startTime > 4:
                 image.destroy()
                 self.backfaceCullingOn()
                 self.disableMouse()
@@ -96,9 +98,10 @@ class Main(ShowBase):
                 self.setupWorld()
                 self.setupControls()
                 # end of setup tasks
-                self.taskMgr.add(self.update, 'update')
+                self.taskMgr.add(self.update, "update")
             else:
                 return task.cont
+
         self.taskMgr.add(finishLaunch)
 
     def update(self, task):
@@ -221,14 +224,9 @@ class Main(ShowBase):
     def updateKeyMap(self, key, value):
         self.keyMap[key] = value
 
-    def doNothing(self):
-        return None
-    
-    def setupWorld(self):
-        self.voyager = self.loader.loadModel(
-                "src/models/voyager/voyager.bam", noCache=True
-            )
-        self.voyager.reparentTo(self.render)
+    def doNothing(self): ...
+
+    def setupWorld(self): ...
 
     def fadeOutGuiElement_ThreadedOnly(
         self, element, timeToFade, execBeforeOrAfter, target, args=()
