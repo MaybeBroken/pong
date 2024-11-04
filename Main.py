@@ -106,39 +106,14 @@ class Main(ShowBase):
 
     def update(self, task):
         result = task.cont
-        playerMoveSpeed = Wvars.speed / 10
-
-        x_movement = 0
-        y_movement = 0
-        z_movement = 0
 
         dt = globalClock.getDt()  # type: ignore
 
-        if self.keyMap["forward"]:
-            x_movement -= dt * playerMoveSpeed * sin(degToRad(self.camera.getH()))
-            y_movement += dt * playerMoveSpeed * cos(degToRad(self.camera.getH()))
-        if self.keyMap["backward"]:
-            x_movement += dt * playerMoveSpeed * sin(degToRad(self.camera.getH()))
-            y_movement -= dt * playerMoveSpeed * cos(degToRad(self.camera.getH()))
-        if self.keyMap["left"]:
-            x_movement -= dt * playerMoveSpeed * cos(degToRad(self.camera.getH()))
-            y_movement -= dt * playerMoveSpeed * sin(degToRad(self.camera.getH()))
-        if self.keyMap["right"]:
-            x_movement += dt * playerMoveSpeed * cos(degToRad(self.camera.getH()))
-            y_movement += dt * playerMoveSpeed * sin(degToRad(self.camera.getH()))
-        if self.keyMap["up"]:
-            z_movement += dt * playerMoveSpeed
-        if self.keyMap["down"]:
-            z_movement -= dt * playerMoveSpeed
+        if self.keyMap["1up"]:
+            self.usr.setZ(self.usr.getZ() + 0.03)
 
-        self.camera.setPos(
-            self.camera.getX() + x_movement,
-            self.camera.getY() + y_movement,
-            self.camera.getZ() + z_movement,
-        )
-        Wvars.camX = self.camera.getX()
-        Wvars.camY = self.camera.getY()
-        Wvars.camZ = self.camera.getZ()
+        if self.keyMap["1down"]:
+            self.usr.setZ(self.usr.getZ() - 0.03)
 
         md = self.win.getPointer(0)
         mouseX = md.getX()
@@ -191,34 +166,21 @@ class Main(ShowBase):
         self.lastMouseX = 0
         self.lastMouseY = 0
         self.keyMap = {
-            "forward": False,
-            "backward": False,
-            "left": False,
-            "right": False,
-            "up": False,
-            "down": False,
-            "primary": False,
-            "secondary": False,
+            "1up": False,
+            "1down": False,
+            "2up": False,
+            "2down": False,
         }
 
-        self.accept("escape", self.doNothing)
-        self.accept("mouse1", self.doNothing)
-        self.accept("mouse1-up", self.doNothing)
-        self.accept("mouse3", self.doNothing)
-        self.accept("w", self.updateKeyMap, ["forward", True])
-        self.accept("w-up", self.updateKeyMap, ["forward", False])
-        self.accept("a", self.updateKeyMap, ["left", True])
-        self.accept("a-up", self.updateKeyMap, ["left", False])
-        self.accept("s", self.updateKeyMap, ["backward", True])
-        self.accept("s-up", self.updateKeyMap, ["backward", False])
-        self.accept("d", self.updateKeyMap, ["right", True])
-        self.accept("d-up", self.updateKeyMap, ["right", False])
-        self.accept("space", self.updateKeyMap, ["up", True])
-        self.accept("space-up", self.updateKeyMap, ["up", False])
-        self.accept("lshift", self.updateKeyMap, ["down", True])
-        self.accept("lshift-up", self.updateKeyMap, ["down", False])
-        self.accept("wheel_up", self.wireframeOn)
-        self.accept("wheel_down", self.wireframeOff)
+        self.accept("escape", sys.exit)
+        self.accept("w", self.updateKeyMap, ["1up", True])
+        self.accept("w-up", self.updateKeyMap, ["1up", False])
+        self.accept("a", self.updateKeyMap, ["1up", True])
+        self.accept("a-up", self.updateKeyMap, ["1up", False])
+        self.accept("s", self.updateKeyMap, ["1down", True])
+        self.accept("s-up", self.updateKeyMap, ["1down", False])
+        self.accept("d", self.updateKeyMap, ["1down", True])
+        self.accept("d-up", self.updateKeyMap, ["1down", False])
         self.accept("q", sys.exit)
 
     def updateKeyMap(self, key, value):
