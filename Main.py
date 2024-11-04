@@ -226,7 +226,25 @@ class Main(ShowBase):
 
     def doNothing(self): ...
 
-    def setupWorld(self): ...
+    def setupWorld(self):
+        pongScale = (0.1, 1, 0.2)
+        self.ball = OnscreenImage(
+            self.loader.loadTexture("src/textures/ball.png"),
+            parent=self.aspect2d,
+            scale=0.08,
+        )
+        self.usr = OnscreenImage(
+            self.loader.loadTexture("src/textures/icon2.png"),
+            parent=self.aspect2d,
+            pos=(-1, 0, 0),
+            scale=pongScale,
+        )
+        self.ai = OnscreenImage(
+            self.loader.loadTexture("src/textures/icon2.png"),
+            parent=self.aspect2d,
+            pos=(1, 0, 0),
+            scale=pongScale,
+        )
 
     def fadeOutGuiElement_ThreadedOnly(
         self, element, timeToFade, execBeforeOrAfter, target, args=()
