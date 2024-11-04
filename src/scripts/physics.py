@@ -21,7 +21,9 @@ class physicsMgr:
     def registerObject(self, object, name: str, velocity=[0, 0, 0], rotation=[0, 0, 0]):
         node = [object, name, velocity, rotation]
         self.registeredObjects[name] = node
-        self.registeredObjects[f"{name}-t"] = Thread(target=self.update, args=[name])
+        self.registeredObjects[f"{name}-t"] = Thread(
+            target=self.update, args=[name]
+        ).start()
 
     def registerColliderPlane(
         self,
@@ -78,7 +80,7 @@ class physicsMgr:
     def update(self, nodeName):
         try:
             while True:
-                sleep(0.01)
+                sleep(1 / 60)
                 node = self.registeredObjects[nodeName]
                 # drag
 

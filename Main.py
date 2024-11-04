@@ -3,6 +3,10 @@ from random import randint
 import time as t
 import sys
 import os
+from src.scripts.physics import physicsMgr as pmgr
+
+physicsMgr = pmgr(gravity=(0, 0, 0))
+
 import src.scripts.vars as Wvars
 from screeninfo import get_monitors
 from direct.showbase.ShowBase import ShowBase
@@ -110,10 +114,10 @@ class Main(ShowBase):
         dt = globalClock.getDt()  # type: ignore
 
         if self.keyMap["1up"]:
-            self.usr.setZ(self.usr.getZ() + 0.03)
+            physicsMgr.addVectorForce("usr", [0, 0, 0.001])
 
         if self.keyMap["1down"]:
-            self.usr.setZ(self.usr.getZ() - 0.03)
+            physicsMgr.addVectorForce("usr", [0, 0, -0.001])
 
         md = self.win.getPointer(0)
         mouseX = md.getX()
@@ -207,6 +211,7 @@ class Main(ShowBase):
             pos=(1, 0, 0),
             scale=pongScale,
         )
+        physicsMgr.registerObject(self.usr, "usr")
 
     def fadeOutGuiElement_ThreadedOnly(
         self, element, timeToFade, execBeforeOrAfter, target, args=()
