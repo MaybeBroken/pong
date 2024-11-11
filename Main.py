@@ -5,7 +5,7 @@ import sys
 import os
 from src.scripts.physics import physicsMgr as pmgr
 
-physicsMgr = pmgr(gravity=(0, 0, 0))
+physicsMgr = pmgr(gravity=(0, 0, 0), drag=0.005)
 
 import src.scripts.vars as Wvars
 from screeninfo import get_monitors
@@ -114,10 +114,10 @@ class Main(ShowBase):
         dt = globalClock.getDt()  # type: ignore
 
         if self.keyMap["1up"]:
-            physicsMgr.addVectorForce("usr", [0, 0, 0.001])
+            physicsMgr.addVectorForce("usr", [0, 0, 0.005])
 
         if self.keyMap["1down"]:
-            physicsMgr.addVectorForce("usr", [0, 0, -0.001])
+            physicsMgr.addVectorForce("usr", [0, 0, -0.005])
 
         md = self.win.getPointer(0)
         mouseX = md.getX()
@@ -212,6 +212,7 @@ class Main(ShowBase):
             scale=pongScale,
         )
         physicsMgr.registerObject(self.usr, "usr")
+        physicsMgr.registerColliderPlane(None, 1, "wall_up", "+y", "stop")
 
     def fadeOutGuiElement_ThreadedOnly(
         self, element, timeToFade, execBeforeOrAfter, target, args=()
